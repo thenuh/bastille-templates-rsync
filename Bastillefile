@@ -30,7 +30,7 @@ CMD sh -c 'cp `ldd -f "%p " /bin/sh` /home/rsync/${ssh_username}/lib/'
 CMD sh -c 'cp `ldd -f "%p " /usr/bin/logger` /home/rsync/${ssh_username}/lib/'
 CMD cp /libexec/ld-elf.so.1 /home/rsync/${ssh_username}/libexec/
 
-CMD install -m666 /dev/null /home/rsync/${ssh_username}/dev/null"
+CMD install -m666 /dev/null /home/rsync/${ssh_username}/dev/null
 SYSRC syslogd_flags="-ss -l /home/rsync/${ssh_username}/dev/log"
 
 CP etc /
