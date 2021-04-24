@@ -8,6 +8,7 @@ PKG rsync
 
 CMD pw groupadd rsync
 CMD echo "${ssh_username}:9000:::::::/bin/sh:${ssh_pwd}" | adduser -w yes -f -
+CMD pw usermod ${ssh_username} -G rsync
 CMD mkdir -p /home/${ssh_username}/.ssh
 CMD chown ${ssh_username}:${ssh_username} /home/${ssh_username}/.ssh
 CMD chmod 700 /home/${ssh_username}/.ssh
