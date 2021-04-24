@@ -1,0 +1,10 @@
+#!/bin/sh
+logger -p auth.info "User trying to execute command: \"${SSH_ORIGINAL_COMMAND}\""
+test_command() {
+if ! test "$1" = "rsync"; then
+        echo "This service allows rsync connections only."
+        exit 1;
+fi
+$@
+}
+test_command $SSH_ORIGINAL_COMMAND

@@ -1,0 +1,45 @@
+ARG ssh_username
+ARG ssh_from_ip
+ARG ssh_port
+ARG ssh_pwd
+ARG ssh_key
+
+PKG rsync
+
+CMD pw groupadd rsync
+CMD echo "${ssh_username}:9000:::::::/bin/sh:${ssh_pwd}" | adduser -w yes -f -
+CMD mkdir -p /home/${ssh_username}/.ssh
+CMD chown ${ssh_username}:${ssh_username} /home/${ssh_username}/.ssh
+CMD chmod 700 /home/${ssh_username}/.ssh
+CMD echo ${ssh_key} > /home/${ssh_username}/.ssh/authorized_keys
+
+CMD mkdir -p /home/rsync/${ssh_username}
+CMD mkdir -p /home/rsync/${ssh_username}/bin
+CMD mkdir -p /home/rsync/${ssh_username}/lib
+CMD mkdir -p /home/rsync/${ssh_username}/libexec
+CMD mkdir -p /home/rsync/${ssh_username}/dev
+CMD mkdir -p /home/rsync/${ssh_username}/public
+CMD chown ${ssh_username}:${ssh_username} /home/rsync/${ssh_username}/public
+CMD chmod 770 /home/rsync/${ssh_username}/public
+
+CMD cp /usr/local/bin/rsync /home/rsync/${ssh_username}/bin/rsync
+CMD cp /bin/sh /home/rsync/${ssh_username}/bin/
+CMD cp /usr/bin/logger /home/rsync/${ssh_username}/bin/
+CMD sh -c 'cp `ldd -f "%p " /usr/local/bin/rsync` /home/rsync/${ssh_username}/lib/'
+CMD sh -c 'cp `ldd -f "%p " /bin/sh` /home/rsync/${ssh_username}/lib/'
+CMD sh -c 'cp `ldd -f "%p " /usr/bin/logger` /home/rsync/${ssh_username}/lib/'
+CMD cp /libexec/ld-elf.so.1 /home/rsync/${ssh_username}/libexec/
+
+CMD install -m666 /dev/null /home/rsync/${ssh_username}/dev/null"
+SYSRC syslogd_flags="-ss -l /home/rsync/${ssh_username}/dev/log"
+
+CP etc /
+RENDER /etc/ssh/sshd_config
+CP bin /home/rsync/${ssh_username}/
+CMD chmod 755 /home/rsync/${ssh_username}/bin/rsync_shim
+
+SERVICE syslogd restart
+SERVICE sshd enable
+SERVICE sshd start
+
+RDR tcp ${ssh_port} ${ssh_port}
