@@ -36,7 +36,7 @@ jobs:
           echo 'pass in inet proto tcp from any to any port ssh flags any keep state' >> /etc/pf.conf
           service pf enable
           service pf start
-          bastille bootstrap -r 12.2-RELEASE
+          bastille bootstrap 12.2-RELEASE
           bastille create rsync_test 12.2-RELEASE bastille0 127.0.0.2
         usesh: true
         sync: sshfs
