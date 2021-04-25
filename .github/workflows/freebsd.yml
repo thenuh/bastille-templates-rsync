@@ -29,7 +29,7 @@ jobs:
           echo 'set skip on lo' >> /etc/pf.conf
           echo 'table <jails> persist' >> /etc/pf.conf
           echo 'nat on $ext_if from <jails> to any -> ($ext_if:0)' >> /etc/pf.conf
-          echo 'rdr-anchor "rdr/*" >> /etc/pf.conf
+          echo 'rdr-anchor "rdr/*"' >> /etc/pf.conf
           echo 'block in all' >> /etc/pf.conf
           echo 'pass out quick keep state' >> /etc/pf.conf
           echo 'pass in inet proto tcp from any to any port ssh flags S/SA keep state' >> /etc/pf.conf
