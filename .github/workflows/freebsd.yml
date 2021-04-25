@@ -24,9 +24,10 @@ jobs:
           sysrc cloned_interfaces+=lo1
           sysrc ifconfig_lo1_name="bastille0"
           service netif cloneup
-          echo 'ext_if="vtnet0"' >> /etc/pf.conf
+          echo 'ext_if="em0"' >> /etc/pf.conf
           echo 'set block-policy return' >> /etc/pf.conf
           echo 'set skip on lo' >> /etc/pf.conf
+          echo 'set skip on bastille0' >> /etc/pf.conf
           echo 'table <jails> persist' >> /etc/pf.conf
           echo 'nat on $ext_if from <jails> to any -> ($ext_if:0)' >> /etc/pf.conf
           echo 'rdr-anchor "rdr/*"' >> /etc/pf.conf
@@ -35,13 +36,10 @@ jobs:
           echo 'pass in inet proto tcp from any to any port ssh flags S/SA keep state' >> /etc/pf.conf
           service pf enable
           service pf start
+          bastille boostrap -r 12.2-RELEASE
+          bastille create rsync_test 12.2-RELEASE bastille0 127.0.0.2
         usesh: true
         snyc: sshfs
         run: |
-          pwd
-          ls -lah
-          whoami
-          env
-          freebsd-version
-          ifconfig
-          cat /etc/pf.conf
+          bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
+          bastille template rsync_test thenuh/bastille-templates-rsync
