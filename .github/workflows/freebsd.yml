@@ -53,6 +53,7 @@ jobs:
           exit
     - name: run tests from host
       run: |
+        ifconfig
         echo ${PRIV} > ./id_ed25519
         ping -c1 freebsd
         ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@freebsd ls
