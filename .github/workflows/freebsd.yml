@@ -52,6 +52,7 @@ jobs:
           jexec rsync_test cat /etc/ssh/sshd_config | grep -e "Port 12222" -e "AllowUser"
           bastille rdr rsync_test list
           echo ${PRIV} > ./id_ed25519
+          chmod 600 ./id_ed25519
           ping -c1 127.0.0.2
           ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@127.0.0.2 ls
           echo "test_string" > ./test
