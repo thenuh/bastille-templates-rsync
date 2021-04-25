@@ -20,7 +20,7 @@ jobs:
         prepare: |
           pkg install -y curl rsync git-lite
           service sshd enable
-          service sshd start
+          service sshd status
         
         run: |
           pwd
@@ -28,3 +28,5 @@ jobs:
           whoami
           env
           freebsd-version
+          ifconfig
+          cat /etc/pf.conf
