@@ -44,7 +44,7 @@ jobs:
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
           bastille template rsync_test thenuh/bastille-templates-rsyncbastille\
           --arg ssh_username=asdf\
-          --arg ssh_from_ip=0.0.0.0\
+          --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key=sillypeas
@@ -53,3 +53,8 @@ jobs:
         #sync: sshfs
         run: |
           ls
+    - name: Test in rsync
+      id: test2
+      run: |
+        ssh freebsd sh -c 'ls'
+        
