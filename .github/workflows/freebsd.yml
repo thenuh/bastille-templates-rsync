@@ -40,9 +40,6 @@ jobs:
           pfctl -sr
           ifconfig
           bastille create rsync_test 12.2-RELEASE 127.0.0.2 bastille0
-        usesh: true
-        sync: sshfs
-        run: |
           sockstat -4
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
           bastille template rsync_test thenuh/bastille-templates-rsyncbastille\
@@ -51,3 +48,8 @@ jobs:
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key=sillypeas
+          env
+        #usesh: true
+        #sync: sshfs
+        run: |
+          ls
