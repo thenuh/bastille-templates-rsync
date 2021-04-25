@@ -39,7 +39,7 @@ jobs:
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
           bastille template rsync_test thenuh/bastille-templates-rsync\
           --arg ssh_username=asdf\
-          --arg ssh_from_ip=10.0.2.2\
+          --arg ssh_from_ip=127.0.0.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key="`cat /tmp/id_ed25519.pub`"
@@ -51,3 +51,4 @@ jobs:
           echo test_string > ./test
           rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' ./test asdf@127.0.0.2:/public
           rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' asdf@127.0.0.2:/public/test ./test2
+          exit
