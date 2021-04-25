@@ -6,9 +6,10 @@ jobs:
   testfreebsd:
     runs-on: macos-latest
     name: A job to run test FreeBSD
+    environment: default
     env:
       PRIV : ${{ secrets.ID_ED25519 }}
-      PUB: ${{ secrets.ID_ED2551_PUB }}
+      PUB: ${{ secrets.ID_ED25519_PUB }}
     steps:
     #- uses: actions/checkout@v2
     - name: Test in FreeBSD
