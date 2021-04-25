@@ -10,18 +10,33 @@ jobs:
       #MYTOKEN : ${{ secrets.MYTOKEN }}
       #MYTOKEN2: "value2"
     steps:
-    - uses: actions/checkout@v2
+    #- uses: actions/checkout@v2
     - name: Test in FreeBSD
       id: test
-      uses: vmactions/freebsd-vm@v0.1.2
+      uses: vmactions/freebsd-vm@v0.1.3
       with:
         #envs: 'MYTOKEN MYTOKEN2'
-        usesh: true
         prepare: |
-          pkg install -y curl rsync git-lite
+          pkg install -y curl rsync git-lite bastille
           service sshd enable
           service sshd status
-        
+          sysrc bastille_enable=YES
+          sysrc cloned_interfaces+=lo1
+          sysrc ifconfig_lo1_name="bastille0"
+          service netif cloneup
+          echo 'ext_if="vtnet0"' >> /etc/pf.conf
+          echo 'set block-policy return' >> /etc/pf.conf
+          echo 'set skip on lo' >> /etc/pf.conf
+          echo 'table <jails> persist' >> /etc/pf.conf
+          echo 'nat on $ext_if from <jails> to any -> ($ext_if:0)' >> /etc/pf.conf
+          echo 'rdr-anchor "rdr/*" >> /etc/pf.conf
+          echo 'block in all' >> /etc/pf.conf
+          echo 'pass out quick keep state' >> /etc/pf.conf
+          echo 'pass in inet proto tcp from any to any port ssh flags S/SA keep state' >> /etc/pf.conf
+          service pf enable
+          service pf start
+        usesh: true
+        snyc: sshfs
         run: |
           pwd
           ls -lah
