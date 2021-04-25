@@ -39,8 +39,9 @@ jobs:
           bastille bootstrap -r 12.2-RELEASE
           bastille create rsync_test 12.2-RELEASE bastille0 127.0.0.2
         usesh: true
-        snyc: sshfs
+        sync: sshfs
         run: |
+          sockstat -4
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
           bastille template rsync_test thenuh/bastille-templates-rsyncbastille\
           --arg ssh_username=asdf\
