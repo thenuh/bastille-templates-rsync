@@ -12,7 +12,7 @@ jobs:
       PUB: ${{ secrets.ID_ED25519_PUB }}
     steps:
     #- uses: actions/checkout@v2
-    - name: Test in FreeBSD
+    - name: init vm environment and deploy jail and apply template
       id: test
       uses: vmactions/freebsd-vm@v0.1.3
       with:
@@ -49,9 +49,8 @@ jobs:
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key="${PUB}"
-        run: ls
-    - name: Test from Host
-      id: test2
+
+    - name: run tests from vm-host
       run: |
         echo ${PRIV} > id_ed25519
         ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 sh -c 'ls' || true
