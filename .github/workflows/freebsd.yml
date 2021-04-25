@@ -48,11 +48,12 @@ jobs:
           --arg ssh_key="${PUB}"
           echo "Done ..."
         run: |
+          jexec rsync_test /etc/ssh/sshd_config
           exit
     - name: run tests from host
       run: |
         echo ${PRIV} > id_ed25519
-        ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 sh -c 'ls' || true
+        ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 ls || true
         echo "test_string" > ./test
         rsync -e 'ssh -i ./id_ed25519 -p 12222' ./test asdf@10.0.2.15:/public
         rsync -e 'ssh -i ./id_ed25519 -p 12222' asdf@10.0.2.15:/public/test ./test2
