@@ -37,7 +37,9 @@ jobs:
           service pf enable
           service pf start
           bastille bootstrap 12.2-RELEASE
-          bastille create rsync_test 12.2-RELEASE bastille0 127.0.0.2
+          pfctl -sr
+          ifconfig
+          bastille create rsync_test 12.2-RELEASE 127.0.0.2 bastille0
         usesh: true
         sync: sshfs
         run: |
