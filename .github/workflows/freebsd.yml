@@ -47,7 +47,7 @@ jobs:
           --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
-          --arg ssh_key="${ PUB }"
+          --arg ssh_key="${PUB}"
           env
         run: |
           echo ${PRIV} > id_ed25519
