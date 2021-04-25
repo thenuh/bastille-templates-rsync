@@ -48,13 +48,14 @@ jobs:
           --arg ssh_key="${PUB}"
           echo "Done ..."
         run: |
-          jexec rsync_test cat /etc/ssh/sshd_config | grep -e "Port 12222" -e "AllowedUser"
+          jexec rsync_test cat /etc/ssh/sshd_config | grep -e "Port 12222" -e "AllowUser"
           bastille rdr rsync_test list
           exit
     - name: run tests from host
       run: |
-        echo ${PRIV} > id_ed25519
-        ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@10.0.2.15 ls || true
+        echo ${PRIV} > ./id_ed25519
+        ping -c1 10.0.2.15
+        ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@10.0.2.15 ls
         echo "test_string" > ./test
         rsync -e 'ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222' ./test asdf@10.0.2.15:/public
         rsync -e 'ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222' asdf@10.0.2.15:/public/test ./test2
