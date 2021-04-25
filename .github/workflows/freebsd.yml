@@ -14,7 +14,7 @@ jobs:
       uses: vmactions/freebsd-vm@v0.1.3
       with:
         prepare: |
-          ssh-keygen -t ed25519 -f ./id_ed25519 -P ""
+          ssh-keygen -t ed25519 -f /tmp/id_ed25519 -P ""
           pkg install -y curl rsync git-lite bastille
           service sshd enable
           service sshd status
@@ -42,12 +42,12 @@ jobs:
           --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
-          --arg ssh_key="`cat ./id_ed25519.pub`"
+          --arg ssh_key="`cat /tmp/id_ed25519.pub`"
           ifconfig
           echo "Done ..."
         run: |
           ping -c1 127.0.0.2
-          ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@127.0.0.2 ls
+          ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222 asdf@127.0.0.2 ls
           echo test_string > ./test
-          rsync -e 'ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222' ./test asdf@127.0.0.2:/public
-          rsync -e 'ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222' asdf@127.0.0.2:/public/test ./test2
+          rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' ./test asdf@127.0.0.2:/public
+          rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' asdf@127.0.0.2:/public/test ./test2
