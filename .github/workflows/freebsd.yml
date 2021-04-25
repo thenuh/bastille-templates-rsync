@@ -46,6 +46,7 @@ jobs:
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key="${PUB}"
+          echo "Done ..."
     - run: |
         echo ${PRIV} > id_ed25519
         ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 sh -c 'ls' || true
