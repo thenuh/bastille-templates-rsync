@@ -7,15 +7,15 @@ jobs:
     runs-on: macos-latest
     name: A job to run test FreeBSD
     env:
-      PRIV : ${{ secrets.default.ID_ED25519 }}
-      PUB: ${{ secrets.default.ID_ED2551_PUB }}
+      PRIV : ${{ secrets.ID_ED25519 }}
+      PUB: ${{ secrets.ID_ED2551_PUB }}
     steps:
     #- uses: actions/checkout@v2
     - name: Test in FreeBSD
       id: test
       uses: vmactions/freebsd-vm@v0.1.3
       with:
-        envs: 'PUB'
+        envs: 'PUB PRIV'
         prepare: |
           pkg install -y curl rsync git-lite bastille
           service sshd enable
@@ -49,9 +49,11 @@ jobs:
           --arg ssh_pwd=asdf1234\
           --arg ssh_key="${PUB}"
           env
-        run: |
-          echo ${PRIV} > id_ed25519
-          ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 sh -c 'ls' || true
-          echo "test_string" > ./test
-          rsync -e 'ssh -i ./id_ed25519 -p 12222' ./test asdf@10.0.2.15:/public
-          rsync -e 'ssh -i ./id_ed25519 -p 12222' asdf@10.0.2.15:/public/test ./test2
+    - name: Test from Host
+      id: test2
+      run: |
+        echo ${PRIV} > id_ed25519
+        ssh -i ./id_ed25519 -p 12222 asdf@10.0.2.15 sh -c 'ls' || true
+        echo "test_string" > ./test
+        rsync -e 'ssh -i ./id_ed25519 -p 12222' ./test asdf@10.0.2.15:/public
+        rsync -e 'ssh -i ./id_ed25519 -p 12222' asdf@10.0.2.15:/public/test ./test2
