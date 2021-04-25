@@ -40,7 +40,7 @@ jobs:
           bastille bootstrap 12.2-RELEASE
           bastille create rsync_test 12.2-RELEASE 127.0.0.2 bastille0
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
-          bastille template rsync_test thenuh/bastille-templates-rsyncbastille\
+          bastille template rsync_test thenuh/bastille-templates-rsync\
           --arg ssh_username=asdf\
           --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
