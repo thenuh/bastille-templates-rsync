@@ -8,7 +8,7 @@ jobs:
     name: A job to run test for FreeBSD 12.2
     environment: default
     env:
-      PRIV : ${{ secrets.ID_ED25519 }}
+      PRIV: ${{ secrets.ID_ED25519 }}
       PUB: ${{ secrets.ID_ED25519_PUB }}
     steps:
     - uses: actions/checkout@v2
