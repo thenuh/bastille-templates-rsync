@@ -51,10 +51,11 @@ jobs:
           env
         #usesh: true
         #sync: sshfs
-        run: |
-          ls
     - name: Test in rsync
       id: test2
       run: |
-        ssh freebsd sh -c 'ls'
+        ssh -p 12222 freebsd sh -c 'ls' || true
+        touch test
+        rsync -e '-p 12222' test asdf@test:/public
+        
         
