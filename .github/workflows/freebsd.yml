@@ -17,7 +17,11 @@ jobs:
       with:
         #envs: 'MYTOKEN MYTOKEN2'
         usesh: true
-        prepare: pkg install -y curl
+        prepare: |
+          pkg install -y curl rsync git-lite
+          service sshd enable
+          service sshd start
+        
         run: |
           pwd
           ls -lah
