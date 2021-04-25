@@ -49,6 +49,7 @@ jobs:
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
           --arg ssh_key="${PUB}"
+        run: ls
     - name: Test from Host
       id: test2
       run: |
