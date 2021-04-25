@@ -1,5 +1,5 @@
 ## Status
-[![Test](https://github.com/thenuh/bastille-templates-rsync/actions/workflows/freebsd.yml/badge.svg?branch=main)](https://github.com/thenuh/bastille-templates-rsync/actions/workflows/freebsd.yml)
+[![Test: FreeBSD 12.2](https://github.com/thenuh/bastille-templates-rsync/actions/workflows/freebsd.yml/badge.svg?branch=main)](https://github.com/thenuh/bastille-templates-rsync/actions/workflows/freebsd.yml)
 
 ## rsync
 Bastille Template for an chrooted rsync only container
