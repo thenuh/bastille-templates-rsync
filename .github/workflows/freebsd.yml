@@ -47,8 +47,8 @@ jobs:
           echo "Done ..."
         run: |
           ping -c1 127.0.0.2
-          ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222 asdf@127.0.0.2 ls
+          ssh -v -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222 asdf@127.0.0.2 ls
           echo test_string > ./test
-          rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' ./test asdf@127.0.0.2:/public
-          rsync -e 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' asdf@127.0.0.2:/public/test ./test2
+          rsync -vie 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' ./test asdf@127.0.0.2:/public
+          rsync -vie 'ssh -oStrictHostKeyChecking=no -i /tmp/id_ed25519 -p 12222' asdf@127.0.0.2:/public/test ./test2
           exit
