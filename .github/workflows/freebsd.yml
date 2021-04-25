@@ -45,11 +45,12 @@ jobs:
           --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
-          --arg ssh_key="${PUB}"
+          --arg ssh_key="$PUB"
           ifconfig
           echo "Done ..."
         run: |
-          echo ${{ secrets.ID_ED25519 }} > ./id_ed25519
+          echo $PRIV
+          echo $PRIV > ./id_ed25519
           cat ./id_ed25519
           chmod 600 ./id_ed25519
           ping -c1 127.0.0.2
