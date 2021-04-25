@@ -48,7 +48,8 @@ jobs:
           --arg ssh_key="${PUB}"
           echo "Done ..."
         run: |
-          jexec rsync_test /etc/ssh/sshd_config
+          jexec rsync_test cat /etc/ssh/sshd_config | grep -e "Port 12222" -e "AllowedUser"
+          bastille rdr rsync_test list
           exit
     - name: run tests from host
       run: |
