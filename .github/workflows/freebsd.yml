@@ -49,13 +49,8 @@ jobs:
           --arg ssh_pwd=asdf1234\
           --arg ssh_key=sillypeas
           env
-        #usesh: true
-        #sync: sshfs
-    - name: Test in rsync
-      id: test2
-      run: |
-        ssh -p 12222 freebsd sh -c 'ls' || true
-        touch test
-        rsync -e '-p 12222' test asdf@test:/public
-        
-        
+        run: |
+          ssh -p 12222 freebsd sh -c 'ls' || true
+          touch test
+          rsync -e 'ssh -p 12222' test asdf@test:/public
+          rsync -e 'ssh -p 12222' asdf@test:/public/test test2
