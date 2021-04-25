@@ -7,17 +7,14 @@ jobs:
     runs-on: macos-latest
     name: A job to run test for FreeBSD 12.2
     environment: default
-    env:
-      PRIV: ${{ secrets.ID_ED25519 }}
-      PUB: ${{ secrets.ID_ED25519_PUB }}
     steps:
     - uses: actions/checkout@v2
     - name: init vm environment and deploy jail and apply template
       id: test
       uses: vmactions/freebsd-vm@v0.1.3
       with:
-        envs: 'PUB PRIV'
         prepare: |
+          ssh-keygen -t ed25519 -f ./id_ed25519 -P ""
           pkg install -y curl rsync git-lite bastille
           service sshd enable
           service sshd status
@@ -45,12 +42,10 @@ jobs:
           --arg ssh_from_ip=10.0.2.2\
           --arg ssh_port=12222\
           --arg ssh_pwd=asdf1234\
-          --arg ssh_key="$PUB"
+          --arg ssh_key="`cat ./id_ed25519.pub`"
           ifconfig
           echo "Done ..."
         run: |
-          echo $PRIV > ./id_ed25519
-          chmod 600 ./id_ed25519
           ping -c1 127.0.0.2
           ssh -oStrictHostKeyChecking=no -i ./id_ed25519 -p 12222 asdf@127.0.0.2 ls
           echo test_string > ./test
