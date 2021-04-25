@@ -36,10 +36,15 @@ jobs:
           echo 'pass in inet proto tcp from any to any port ssh flags S/SA keep state' >> /etc/pf.conf
           service pf enable
           service pf start
-          bastille boostrap -r 12.2-RELEASE
+          bastille bootstrap -r 12.2-RELEASE
           bastille create rsync_test 12.2-RELEASE bastille0 127.0.0.2
         usesh: true
         snyc: sshfs
         run: |
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
-          bastille template rsync_test thenuh/bastille-templates-rsync
+          bastille template rsync_test thenuh/bastille-templates-rsyncbastille\
+          --arg ssh_username=asdf\
+          --arg ssh_from_ip=0.0.0.0\
+          --arg ssh_port=12222\
+          --arg ssh_pwd=asdf1234\
+          --arg ssh_key=sillypeas
