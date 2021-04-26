@@ -1,10 +1,58 @@
 #!/bin/sh
 logger -p auth.info "User trying to execute command: \"${SSH_ORIGINAL_COMMAND}\""
-test_command() {
-if ! test "$1" = "rsync"; then
-        echo "This service allows rsync connections only."
-        exit 1;
-fi
-$@
+validate_tokens() {
+  test "$1" = "rsync" || 
+  { 
+    logger -p auth.info "User did not use rsync"
+    echo "This service allows rsync connections only."
+    exit 1
+  }
+  test "$2" = "--server" ||
+  {
+    logger -p auth.warn "User is possibly trying to game the system"
+    echo "This service allows rsync connections only."
+    exit 1
+  }
+  test "$3" = "--sender" && 
+  { 
+    FETCH=true
+    shift 3
+  } || 
+  { 
+    FETCH=false
+    shift 2
+  }
+  SHORT_ARGS=$1
+  # Filter unwanted short args
+  SHORT_ARGS=$(echo $SHORT_ARGS | tr -d '')
+  shift
+  # Filter unwanted long args ... TODO
+  REST=
+  while test $# -gt 0; do
+    case $1 in
+    --*) REST="$REST $1"; shift;;
+    .) REST="$REST $1"; shift;;
+    *) REST="$REST $1"; shift;;
+    esac
+  done
 }
-test_command $SSH_ORIGINAL_COMMAND
+validate_tokens $( echo $SSH_ORIGINAL_COMMAND | tr -d '\\<;>|$&{}[]()`!?"'\''')
+$FETCH &&
+{
+  rsync --server --sender $SHORT_ARGS $REST &&
+  logger -p auth.info "User successfully executed command: \"${SSH_ORIGINAL_COMMAND}\"" ||
+  {
+    logger -p auth.err "User failed to execute command: \"${SSH_ORIGINAL_COMMAND}\""
+    exit 1
+  }
+  exit 0
+} ||
+{
+  rsync --server $SHORT_ARGS $REST &&
+  logger -p auth.info "User successfully executed command: \"${SSH_ORIGINAL_COMMAND}\"" ||
+  {
+    logger -p auth.err "User failed to execute command: \"${SSH_ORIGINAL_COMMAND}\""
+    exit 1
+  }
+  exit 0
+}
