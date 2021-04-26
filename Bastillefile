@@ -23,7 +23,7 @@ CMD chown ${ssh_username}:${ssh_username} /home/rsync/${ssh_username}/public
 CMD chmod 770 /home/rsync/${ssh_username}/public
 
 CMD cp /usr/local/bin/rsync /home/rsync/${ssh_username}/bin/rsync
-CMD cp /bin/tr /home/rsync/${ssh_username}/bin/
+CMD cp /usr/bin/tr /home/rsync/${ssh_username}/bin/
 CMD cp /bin/sh /home/rsync/${ssh_username}/bin/
 CMD cp /usr/bin/logger /home/rsync/${ssh_username}/bin/
 CMD sh -c 'cp `ldd -f "%p " /usr/local/bin/rsync` /home/rsync/${ssh_username}/lib/'
