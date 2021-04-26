@@ -6,7 +6,7 @@ Bastille Template for an chrooted rsync only container
 
 ## Bootstrap
 ```shell
-bastille bootstrap https://gitlab.com/thenuh/bastille-templates-rsync
+bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
 ```
 
 ## Usage
