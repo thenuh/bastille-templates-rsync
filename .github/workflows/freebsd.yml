@@ -4,15 +4,16 @@ on: [push]
 
 jobs:
   testfreebsd:
-    runs-on: macos-latest
-    name: A job to run test for FreeBSD 12.2
+    runs-on: macos-12
+    name: A job to run test for FreeBSD 13.1
     environment: default
     steps:
     - uses: actions/checkout@v2
     - name: init vm environment and deploy jail and apply template
       id: test
-      uses: vmactions/freebsd-vm@v0.1.3
+      uses: vmactions/freebsd-vm@v0
       with:
+        release: 13.1
         prepare: |
           ssh-keygen -t ed25519 -f /tmp/id_ed25519 -P ""
           pkg install -y curl rsync git-lite bastille
@@ -34,8 +35,8 @@ jobs:
           echo 'pass in inet proto tcp from any to any port ssh flags any keep state' >> /etc/pf.conf
           service pf enable
           service pf start
-          bastille bootstrap 12.2-RELEASE
-          bastille create rsync_test 12.2-RELEASE 127.0.0.2 bastille0
+          bastille bootstrap 13.1-RELEASE
+          bastille create rsync_test 13.1-RELEASE 127.0.0.2 bastille0
           bastille bootstrap https://github.com/thenuh/bastille-templates-rsync
           bastille template rsync_test thenuh/bastille-templates-rsync\
           --arg ssh_username=asdf\
